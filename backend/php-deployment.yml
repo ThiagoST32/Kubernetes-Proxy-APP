@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: php-app-5
+  labels: 
+    app: php-app-5
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: php-app-5
+  template:
+    metadata:
+      labels:
+        app: php-app-5
+    spec:
+      containers:
+        - name: php-app-5
+          image: thiagost32/php-app-5:1.1
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: php-service
+  labels:
+    app: php-service
+spec:
+  type: ClusterIP
+  ports:
+    - targetPort: 80
+      port: 80
+  selector:
+    app: php-app-5
